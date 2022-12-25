@@ -30,9 +30,10 @@ class lin_model():
         self.calc_r_sq()
 
     def calc_F(self):
-        p = len(self.estimates -1)
+        p = len(self.estimates)-1
         A = np.column_stack((np.zeros((p, 1)), np.eye(p)))
-        Ab = np.transpose(A).dot(self.estimates)
+        Ab = A.dot(self.estimates.T)
+        print(self.estimates)
         print(np.shape(Ab))
         S_sq = (1/(self.obs-len(self.estimates)))*self.RSS
         hat = np.matmul(np.transpose(self.X),self.X)
@@ -54,7 +55,7 @@ class lin_model():
     
     def p_val(self, statistic, value = None):
         if statistic == "F":
-            return scipy.stats.f.cdf(self.F, len(self.estimates)-1, (self.obs-len(self.estimates)))
+            return 1-scipy.stats.f.cdf(self.F, len(self.estimates)-1, (self.obs-len(self.estimates)))
     
     def print_vals(self):
         print("         ", "Estimate", "Std. Error", "t value", "p value")
